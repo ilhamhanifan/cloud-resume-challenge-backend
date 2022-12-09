@@ -1,7 +1,9 @@
 steps:
-  # build and push backend docker image
+  # build docker image
   - name: gcr.io/cloud-builders/docker
     args: ['build','-t','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA','.']
+   
+  # push docker image to gcr
   - name: gcr.io/cloud-builders/docker
     args: ['push','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA']
 
