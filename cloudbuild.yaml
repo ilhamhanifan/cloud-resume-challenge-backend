@@ -1,0 +1,15 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ['build','-t','gcr.io/hf-crc-001/crc-backend','.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['push','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA']
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    args:
+      - run
+      - deploy
+      - crc-cr-backend
+      - --image=gcr.io/hf-crc-001/crc-backend:$SHORT_SHA
+      - --region=asia-southeast2
+      - --platform=managed
+      - --max-instances=1
+      - --allow-unauthenticated
