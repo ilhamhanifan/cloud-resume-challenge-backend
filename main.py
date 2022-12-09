@@ -1,20 +1,35 @@
 from google.cloud import firestore
-import json 
+from flask import Flask
+import json, os
 
-db = firestore.Client.from_service_account_json('./terraform-sa-key.json')
-doc = db.collection(u'counter-collection').document(u'counter-id')
+db = firestore.Client(project='hf-crc-001')
+doc = db.collection(u'counter_collection').document(u'counter_doc')
 
 def get_counter():
-  return doc.get().to_dict()['counter']['count']
+  return doc.get().to_dict()['counter']
 
+def increment_counter():
+  counter = get_counter() + 1
+  doc.update({u'counter': counter})
+  return counter
+
+
+app = Flask(__name__)
+
+@app.route("/")
 def update_counter():
-  count = get_counter() + 1
-  doc.update({u'counter':{u'count': count}})
-  return count
-
-def firestore(request):
   headers = {
-      'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*'
   }
-  res = update_counter()
-  return (json.dumps({u'counter':{u'count': res}}), 200, headers) 
+  res = increment_counter()
+  return (json.dumps({u'counter':res}), 200, headers) 
+
+@app.route("/hello")
+def uptime_check():
+  headers = {
+    'Access-Control-Allow-Origin': '*'
+  }
+  return (json.dumps("Hello from the cloud!"), 200, headers) 
+
+if __name__ == "__main__":
+	app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
