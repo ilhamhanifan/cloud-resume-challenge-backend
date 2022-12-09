@@ -1,6 +1,6 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    args: ['build','-t','gcr.io/hf-crc-001/crc-backend','.']
+    args: ['build','-t','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA','.']
   - name: gcr.io/cloud-builders/docker
     args: ['push','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA']
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
