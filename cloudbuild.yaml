@@ -22,7 +22,7 @@ steps:
 
   - id: build cypress image
     name: 'gcr.io/cloud-builders/docker'
-    args: [ 'build', '-t', 'gcr.io/app-trick/cypress-tests', '-f', './cypress/Dockerfile', '.']
+    args: [ 'build', '-t', 'gcr.io/hf-crc-001/cypress-tests', '-f', './cypress/Dockerfile', '.']
   
   - id: push cypress image
     name: 'gcr.io/cloud-builders/docker'
