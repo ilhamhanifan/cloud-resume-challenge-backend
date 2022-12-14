@@ -10,6 +10,10 @@ variable "region" {
   type    = string
 }
 
+variable "zone" {
+  type    = string
+}
+
 variable "cr_name" {
   type    = string
 }
