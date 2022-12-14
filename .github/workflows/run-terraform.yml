@@ -29,7 +29,7 @@ jobs:
       run: terraform -chdir="./terraform" init
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-        TF_VAR_project: "'${{ secrets.TF_VAR_project }}'"
+        TF_VAR_project: "${{ secrets.TF_VAR_project }}"
         TF_VAR_reg: "'${{ secrets.TF_VAR_reg }}'"
         TF_VAR_region: "'${{ secrets.TF_VAR_region }}'"
         TF_VAR_zone: "'${{ secrets.TF_VAR_zone }}'"
