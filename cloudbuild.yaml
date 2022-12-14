@@ -19,5 +19,25 @@ steps:
       - --platform=managed
       - --max-instances=1
       - --allow-unauthenticated
+
+    - id: build cypress image
+      name: 'gcr.io/cloud-builders/docker'
+      args: [ 'build', '-t', 'gcr.io/app-trick/cypress-tests', '-f', './cypress/Dockerfile', '.']
+    
+    - id: push cypress image
+      name: 'gcr.io/cloud-builders/docker'
+      args: ['push', 'gcr.io/app-trick/cypress-tests']          
+
+    - name: 'gcr.io/cloud-builders/gcloud'
+      args:
+      - run
+      - deploy
+      - cypress-tests
+      - --image gcr.io/app-trick/cypress-tests
+      - --region=asia-southeast2
+      - --platform managed
+      - --max-instances=1
+      - --allow-unauthenticated
+
 options:
   logging: CLOUD_LOGGING_ONLY
