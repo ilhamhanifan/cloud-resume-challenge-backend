@@ -1,14 +1,14 @@
 steps:
-  # build docker image
-  - name: gcr.io/cloud-builders/docker
+  - id: build docker image
+    name: gcr.io/cloud-builders/docker
     args: ['build','-t','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA','.']
-   
-  # push docker image to gcr
-  - name: gcr.io/cloud-builders/docker
+
+  - id: push docker image to gcr
+    name: gcr.io/cloud-builders/docker
     args: ['push','gcr.io/hf-crc-001/crc-backend:$SHORT_SHA']
 
-  # deploy cloud run backend
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  - id: deploy cloud run backend
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: gcloud
     args:
       - run
@@ -19,5 +19,25 @@ steps:
       - --platform=managed
       - --max-instances=1
       - --allow-unauthenticated
+  - id: Run E2Es
+  name: docker  
+    args:
+      [
+        'run',
+        '--entrypoint',
+        'yarn',
+        '--workdir',
+        '/e2e',
+        '--volume',
+        '/workspace:/e2e',
+        '--env',
+        'CYPRESS_CACHE_FOLDER=/e2e/.tmp/Cypress',
+        '--ipc',
+        'host',
+        'cypress/included:3.2.0',
+        'cypress/cypress-test.js',
+      ]
+
+
 options:
   logging: CLOUD_LOGGING_ONLY
