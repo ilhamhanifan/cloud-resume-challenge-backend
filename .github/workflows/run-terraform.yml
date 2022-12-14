@@ -26,18 +26,18 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
 
     - name: Terraform Init
-      run: terraform init ./terraform
+      run: terraform init -chdir="./terraform"
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         
     - name: Terraform Plan
-      run: terraform plan ./terraform
+      run: terraform plan -chdir="./terraform"
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply ./terraform -auto-approve
+      run: terraform apply -chdir="./terraform" -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         
