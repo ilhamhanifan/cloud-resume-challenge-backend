@@ -1,0 +1,69 @@
+name: run terraform
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  run-terraform:
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+
+    - name: "Terraform Init"
+      id: terraform_init
+      uses: ops18/terraform-github-actions@master
+      with:
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
+        tf_actions_comment: "false"
+        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
+        tf_actions_subcommand: init
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+        
+    - name: "Terraform Validate"
+      id: terraform_validate
+      uses: ops18/terraform-github-actions@master
+      with:
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
+        tf_actions_comment: "false"
+        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
+        tf_actions_subcommand: validate
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}} 
+    - name: "Terraform Plan"
+      id: terraform_plan
+      uses: ops18/terraform-github-actions@master
+      with:
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
+        tf_actions_comment: "false"
+        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
+        tf_actions_subcommand: plan
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+
+    - name: "Terraform Apply"
+      uses: ops18/terraform-github-actions@master
+      id: terraform_apply
+      with:
+        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
+        tf_actions_comment: "false"
+        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
+        tf_actions_subcommand: apply
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
