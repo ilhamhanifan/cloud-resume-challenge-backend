@@ -19,24 +19,6 @@ steps:
       - --platform=managed
       - --max-instances=1
       - --allow-unauthenticated
-  - id: Run E2Es
-    name: docker  
-    args:
-      [
-        'run',
-        '--entrypoint',
-        'yarn',
-        '--workdir',
-        '/e2e',
-        '--volume',
-        '/workspace:/e2e',
-        '--env',
-        'CYPRESS_CACHE_FOLDER=/e2e/.tmp/Cypress',
-        '--ipc',
-        'host',
-        'cypress/included:3.2.0',
-        '/e2e/cypress/cypress-test.js',
-      ]
 
 options:
   logging: CLOUD_LOGGING_ONLY
