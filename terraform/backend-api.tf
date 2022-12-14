@@ -42,7 +42,6 @@ resource "google_cloud_run_service" "cloud_run_backend" {
     percent         = 100
     latest_revision = true
   }
-  depends_on = [null_resource.init_docker_images]
 }
 
 data "google_iam_policy" "noauth" {
