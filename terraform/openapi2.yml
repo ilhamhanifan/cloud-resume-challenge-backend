@@ -1,0 +1,31 @@
+# openapi2-run.yaml
+swagger: '2.0'
+info:
+  title: dev-api 
+  description: Sample API on API Gateway with a Cloud Run backend
+  version: 1.0.0
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: https://crc-cr-backend-t6a43rohhq-et.a.run.app/
+paths:
+  /:
+    get:
+      summary: Increment Firestore Counter
+      operationId: firestore
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /hello:
+    get:
+      summary: Cloud Run Counter REST API 
+      operationId: uptime_check
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
