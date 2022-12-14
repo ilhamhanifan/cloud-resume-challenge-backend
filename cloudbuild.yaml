@@ -35,7 +35,7 @@ steps:
     - cypress-tests
     - --image gcr.io/hf-crc-001/cypress-tests
     - --region=asia-southeast2
-    - --platform managed
+    - --platform=managed
     - --max-instances=1
     - --allow-unauthenticated
 
