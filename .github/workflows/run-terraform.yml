@@ -25,45 +25,21 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
 
-    - name: "Terraform Init"
-      id: terraform_init
-      uses: ops18/terraform-github-actions@master
-      with:
-        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-        tf_actions_comment: "false"
-        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
-        tf_actions_subcommand: init
+    - name: Terraform Init
+      run: terraform init
       env:
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         
-    - name: "Terraform Validate"
-      id: terraform_validate
-      uses: ops18/terraform-github-actions@master
-      with:
-        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-        tf_actions_comment: "false"
-        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
-        tf_actions_subcommand: validate
+    - name: Terraform Plan
+      run: terraform plan
       env:
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}} 
-    - name: "Terraform Plan"
-      id: terraform_plan
-      uses: ops18/terraform-github-actions@master
-      with:
-        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-        tf_actions_comment: "false"
-        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
-        tf_actions_subcommand: plan
-      env:
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
 
-    - name: "Terraform Apply"
-      uses: ops18/terraform-github-actions@master
-      id: terraform_apply
-      with:
-        tf_actions_version: ${{ env.TERRAFORM_VERSION }}
-        tf_actions_comment: "false"
-        tf_actions_working_dir: environments/${{ env.BRANCH_NAME }}
-        tf_actions_subcommand: apply
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve
       env:
-        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY}}
+        GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+        
+        
+        
