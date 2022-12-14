@@ -35,7 +35,7 @@ steps:
         '--ipc',
         'host',
         'cypress/included:3.2.0',
-        'cypress/cypress-test.js',
+        '/e2e/cypress/cypress-test.js',
       ]
 
 options:
