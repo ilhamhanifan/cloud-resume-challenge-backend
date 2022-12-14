@@ -20,7 +20,7 @@ steps:
       - --max-instances=1
       - --allow-unauthenticated
   - id: Run E2Es
-  name: docker  
+    name: docker  
     args:
       [
         'run',
@@ -37,7 +37,6 @@ steps:
         'cypress/included:3.2.0',
         'cypress/cypress-test.js',
       ]
-
 
 options:
   logging: CLOUD_LOGGING_ONLY
