@@ -29,17 +29,37 @@ jobs:
       run: terraform -chdir="./terraform" init
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+        TF_VAR_project: '${{ secrets.TF_VAR_project }}'
+        TF_VAR_reg: '${{ secrets.TF_VAR_reg }}'
+        TF_VAR_region: '${{ secrets.TF_VAR_region }}'
+        TF_VAR_cr_name: '${{ secrets.TF_VAR_cr_name }}'
+        TF_VAR_api_id: '${{ secrets.TF_VAR_api_id }}'
+        TF_VAR_api_gateway_location: '${{ secrets.TF_VAR_api_gateway_location }}'
+        TF_VAR_api_gateway_id: '${{ secrets.TF_VAR_api_gateway_id }}'
         
     - name: Terraform Plan
       run: terraform -chdir="./terraform" plan
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+        TF_VAR_project: '${{ secrets.TF_VAR_project }}'
+        TF_VAR_reg: '${{ secrets.TF_VAR_reg }}'
+        TF_VAR_region: '${{ secrets.TF_VAR_region }}'
+        TF_VAR_cr_name: '${{ secrets.TF_VAR_cr_name }}'
+        TF_VAR_api_id: '${{ secrets.TF_VAR_api_id }}'
+        TF_VAR_api_gateway_location: '${{ secrets.TF_VAR_api_gateway_location }}'
+        TF_VAR_api_gateway_id: '${{ secrets.TF_VAR_api_gateway_id }}'
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform -chdir="./terraform" apply -auto-approve
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-        
+        TF_VAR_project: '${{ secrets.TF_VAR_project }}'
+        TF_VAR_reg: '${{ secrets.TF_VAR_reg }}'
+        TF_VAR_region: '${{ secrets.TF_VAR_region }}'
+        TF_VAR_cr_name: '${{ secrets.TF_VAR_cr_name }}'
+        TF_VAR_api_id: '${{ secrets.TF_VAR_api_id }}'
+        TF_VAR_api_gateway_location: '${{ secrets.TF_VAR_api_gateway_location }}'
+        TF_VAR_api_gateway_id: '${{ secrets.TF_VAR_api_gateway_id }}'
         
         
