@@ -73,16 +73,16 @@ resource "google_api_gateway_api" "api_gw" {
 
 }
 
-resource "null_resource" "init_openapi_conf" {
-  provisioner "local-exec" {
-    command = <<-EOT
+# resource "null_resource" "init_openapi_conf" {
+#   provisioner "local-exec" {
+#     command = <<-EOT
 
-      sed -i 's|https.*app|${google_cloud_run_service.cloud_run_backend.status[0].url}|' openapi2.yml
-    EOT    
-  }
-  triggers = { always_run = timestamp() }
-  depends_on = [google_api_gateway_api.api_gw]
-}
+#       sed -i 's|https.*app|${google_cloud_run_service.cloud_run_backend.status[0].url}|' openapi2.yml
+#     EOT    
+#   }
+#   triggers = { always_run = timestamp() }
+#   depends_on = [google_api_gateway_api.api_gw]
+# }
 
 resource "google_api_gateway_api_config" "api_gw_cfg" {
   provider             = google-beta
@@ -99,7 +99,7 @@ resource "google_api_gateway_api_config" "api_gw_cfg" {
   lifecycle {
     create_before_destroy = true
   }
-  depends_on = [null_resource.init_openapi_conf]
+#   depends_on = [null_resource.init_openapi_conf]
 
 }
 
