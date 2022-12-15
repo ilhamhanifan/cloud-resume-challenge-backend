@@ -5,11 +5,12 @@ resource "google_container_registry" "registry" {
 }
 
 # FIRESTORE
-resource "google_app_engine_application" "firestore_backend" {
-  project     = var.project
-  location_id = var.region
-  database_type = "CLOUD_FIRESTORE"
-}
+# # Use this if GAE resource is created from scratch
+# resource "google_app_engine_application" "firestore_backend" {
+#   project     = var.project
+#   location_id = var.region
+#   database_type = "CLOUD_FIRESTORE"
+# }
 
 resource "google_firestore_document" "firestore_doc" {
   project     = var.project
@@ -22,7 +23,7 @@ resource "google_firestore_document" "firestore_doc" {
       }
     }
   )
-  depends_on = [google_app_engine_application.firestore_backend]
+#   depends_on = [google_app_engine_application.firestore_backend]
 }
 
 # CLOUD RUN
