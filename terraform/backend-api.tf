@@ -114,5 +114,3 @@ resource "google_api_gateway_gateway" "api_gw_gw" {
 
   depends_on   = [google_api_gateway_api_config.api_gw_cfg]
 }
-
-
