@@ -69,6 +69,8 @@ resource "google_api_gateway_api" "api_gw" {
   api_id       = var.api_id
   project      = var.project
   display_name = var.api_id
+  depends_on = [google_cloud_run_service.cloud_run_backend]
+
 }
 
 resource "null_resource" "init_openapi_conf" {
