@@ -77,7 +77,7 @@ resource "null_resource" "init_openapi_conf" {
   provisioner "local-exec" {
     command = <<-EOT
 
-      sed -i 's|https.*app|${var.project}${google_cloud_run_service.cloud_run_backend.status[0].url}|' openapi2.yml
+      sed -i 's|https.*app|${var.TF_VAR_CR_NAME}${google_cloud_run_service.cloud_run_backend.status[0].url}|' openapi2.yml
     EOT    
   }
   triggers = { always_run = timestamp() }
