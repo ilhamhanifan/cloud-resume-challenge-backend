@@ -28,7 +28,7 @@ resource "google_firestore_document" "firestore_doc" {
 
 # CLOUD RUN
 resource "google_cloud_run_service" "cloud_run_backend" {
-  name     = crc-name-2
+  name     = "cr-name-2"
   location = var.region
 
   template {
