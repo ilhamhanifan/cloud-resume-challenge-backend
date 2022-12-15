@@ -28,7 +28,7 @@ resource "google_firestore_document" "firestore_doc" {
 
 # CLOUD RUN
 resource "google_cloud_run_service" "cloud_run_backend" {
-  name     = var.cr_name
+  name     = crc-name-2
   location = var.region
 
   template {
@@ -77,7 +77,7 @@ resource "null_resource" "init_openapi_conf" {
   provisioner "local-exec" {
     command = <<-EOT
 
-      sed -i 's|https.*app|${var.cr_name}${google_cloud_run_service.cloud_run_backend.status[0].url}|' openapi2.yml
+      sed -i 's|https.*app|${google_cloud_run_service.cloud_run_backend.status[0].url}|' openapi2.yml
     EOT    
   }
   triggers = { always_run = timestamp() }
